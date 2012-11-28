@@ -1,30 +1,46 @@
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 
 public class Formula {
-	private Set<Clause> clauses;
+	private Map<Clause, Integer> clauses;
+	private Set<Clause> unmodifiableClauseSet;
 	
 	public Formula() {
-		this.clauses = new HashSet<Clause>();
+		this.clauses = new HashMap<Clause, Integer>();
+		this.unmodifiableClauseSet = Collections.unmodifiableSet(clauses.keySet());
 	}
 	
+	/**
+	 * Adds the specified clause to the clause set
+	 * 
+	 * If there is already an equivalent clause, and the given clause is less complex than the existing one,
+	 * the existing clause is replaced by the given one.
+	 * 
+	 * @param clause the clause to add
+	 */
 	public void addClause(Clause clause) {
-		clauses.add(clause);
+		int newClauseComplexity = clause.getResolvationComplexity();
+		Integer existingClauseComplexity = clauses.get(clause);
+		if (existingClauseComplexity == null || newClauseComplexity < existingClauseComplexity) {
+			clauses.put(clause, newClauseComplexity);
+		}
 	}
 	
 	public void addClause(Literal... literals) {
-		clauses.add(new Clause(literals));
+		addClause(new Clause(literals));
 	}
 	
 	public void addClauses(Collection<Clause> clauses) {
-		this.clauses.addAll(clauses);
+		for (Clause clause : clauses)
+			addClause(clause);
 	}
 	
 	public Set<Clause> getClauses() {
-		return clauses;
+		return unmodifiableClauseSet;
 	}
 	
 	public boolean equals(Formula other) {
@@ -46,7 +62,7 @@ public class Formula {
 	@Override
 	public String toString() {
 		String s = null;
-		for (Clause clause : clauses) {
+		for (Clause clause : clauses.keySet()) {
 			if (s == null)
 				s = "";
 			else

@@ -43,6 +43,18 @@ public class Clause {
 		return rightOrigin;
 	}
 	
+	/**
+	 * Gets the nubmer of clauses that needed to be resolved before this clause could be resolved
+	 * 
+	 * @return a measurement for the complexity to resolve this clause
+	 */
+	public int getResolvationComplexity() {
+		if (leftOrigin != null && rightOrigin != null)
+			return leftOrigin.getResolvationComplexity() + rightOrigin.getResolvationComplexity() + 1;
+		else
+			return 1;
+	}
+	
 	@Override
 	public int hashCode() {
 		return literals.hashCode();
@@ -69,7 +81,7 @@ public class Clause {
 		}
 		if (s == null)
 			return "EMPTY";
-		return "{" + s + "}";
+		return "{" + s + "}[" + getResolvationComplexity() + "]";
 	}
 	
 	public Clause resolveWith(Clause other) {
