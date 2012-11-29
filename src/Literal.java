@@ -41,7 +41,7 @@ public class Literal implements Comparable<Literal> {
 	
 	@Override
 	public String toString() {
-		return (isNegative ? "-" : "") + atom.toString();
+		return (isNegative ? "neg " : "") + atom.toString();
 	}
 
 	@Override

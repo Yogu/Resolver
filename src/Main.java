@@ -4,12 +4,18 @@ import java.util.Set;
 
 public class Main {
 	public static void main(String[] args) {
-		Atom a11 = new Atom("A11");
+		/*Atom a11 = new Atom("A11");
 		Atom a12 = new Atom("A12");
 		Atom a13 = new Atom("A13");
 		Atom a21 = new Atom("A21");
 		Atom a22 = new Atom("A22");
-		Atom a23 = new Atom("A23");
+		Atom a23 = new Atom("A23");*/
+		Atom a11 = new Atom("A_{1,1}");
+		Atom a12 = new Atom("A_{1,2}");
+		Atom a13 = new Atom("A_{1,3}");
+		Atom a21 = new Atom("A_{2,1}");
+		Atom a22 = new Atom("A_{2,2}");
+		Atom a23 = new Atom("A_{2,3}");
 		Literal p11 = Literal.createPositive(a11);
 		Literal p12 = Literal.createPositive(a12);
 		Literal p13 = Literal.createPositive(a13);
@@ -52,7 +58,7 @@ public class Main {
 		
 		
 		Resolver resolver = new Resolver(formula);
-		Clause emptyClause = resolver.resolveEmptyClause();
+		Clause emptyClause = resolver.resolveEmptyClause(false);
 		if (emptyClause != null) {
 			System.out.println("");
 			System.out.println("================================================================");
@@ -83,7 +89,7 @@ public class Main {
 		if (clause.getLeftOrigin() != null && clause.getRightOrigin() != null) {
 			printDerivation(clause.getLeftOrigin());
 			printDerivation(clause.getRightOrigin());
-			System.out.println(String.format("%s, %s => %s", clause.getLeftOrigin(), clause.getRightOrigin(), clause));
+			System.out.println(String.format("%s, %s toward %s", clause.getLeftOrigin(), clause.getRightOrigin(), clause));
 		}
 	}
 }

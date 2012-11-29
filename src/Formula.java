@@ -6,11 +6,11 @@ import java.util.Set;
 
 
 public class Formula {
-	private Map<Clause, Integer> clauses;
+	private Map<Clause, Clause> clauses;
 	private Set<Clause> unmodifiableClauseSet;
 	
 	public Formula() {
-		this.clauses = new HashMap<Clause, Integer>();
+		this.clauses = new HashMap<Clause, Clause>();
 		this.unmodifiableClauseSet = Collections.unmodifiableSet(clauses.keySet());
 	}
 	
@@ -24,9 +24,9 @@ public class Formula {
 	 */
 	public void addClause(Clause clause) {
 		int newClauseComplexity = clause.getResolvationComplexity();
-		Integer existingClauseComplexity = clauses.get(clause);
-		if (existingClauseComplexity == null || newClauseComplexity < existingClauseComplexity) {
-			clauses.put(clause, newClauseComplexity);
+		Clause existingClause = clauses.get(clause);
+		if (existingClause == null || newClauseComplexity < existingClause.getResolvationComplexity()) {
+			clauses.put(clause, clause);
 		}
 	}
 	
@@ -41,6 +41,10 @@ public class Formula {
 	
 	public Set<Clause> getClauses() {
 		return unmodifiableClauseSet;
+	}
+	
+	public Clause findClause(Clause clause) {
+		return clauses.get(clause);
 	}
 	
 	public boolean equals(Formula other) {

@@ -1,4 +1,5 @@
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 
 
@@ -21,6 +22,8 @@ public class Resolver {
 		
 		// If we don't break on empty clauses, we now need to check whether the empty clause is contained by 
 		if (!breakEarly)
+			return formula.findClause(Clause.EMPTY);
+		
 		return null;
 	}
 	
@@ -31,7 +34,9 @@ public class Resolver {
 	private Clause resolveNext(boolean breakEarly) {
 		// cache access
 		Set<Clause> clauses = formula.getClauses();
-		Set<Clause> resolvents = new HashSet<Clause>();
+		
+		// Collect all clauses, even if they are equal, to later keep the most simple one
+		Collection<Clause> resolvents = new ArrayList<Clause>();
 		
 		for (Clause leftClause : clauses) {
 			for (Clause rightClause : clauses) {
@@ -42,8 +47,8 @@ public class Resolver {
 						formula.addClauses(resolvents);
 						return resolvent;
 					}
-					if (resolvents.add(resolvent))
-						System.out.println(formula.getClauses().size() + resolvents.size());
+					resolvents.add(resolvent);
+					System.out.println(formula.getClauses().size() + resolvents.size());
 				}
 			}
 		}

@@ -52,7 +52,7 @@ public class Clause {
 		if (leftOrigin != null && rightOrigin != null)
 			return leftOrigin.getResolvationComplexity() + rightOrigin.getResolvationComplexity() + 1;
 		else
-			return 1;
+			return 0;
 	}
 	
 	@Override
@@ -81,7 +81,7 @@ public class Clause {
 		}
 		if (s == null)
 			return "EMPTY";
-		return "{" + s + "}[" + getResolvationComplexity() + "]";
+		return "\\{" + s + "\\}";//[" + getResolvationComplexity() + "]";
 	}
 	
 	public Clause resolveWith(Clause other) {
